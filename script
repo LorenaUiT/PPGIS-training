@@ -1,0 +1,25 @@
+### Libraries
+library(reshape2)
+library(raster)
+library(sp)
+library(rgdal)
+library(rgeos)
+
+
+### Load datasets
+first<-read.delim("First-conflict.txt")
+markers<-read.delim("Markers-conflict.txt")
+second<-read.delim("Second-conflict.txt")
+second<-subset(second,second$age>17) ##select respondents that are above 18
+first<-first[!duplicated(first$LoginID),] ## eliminates duplicates of LoginID (each respondent should have a unique questionnaire)
+
+first<-subset(first[,c(4,9,11,15,21)])
+markers<-subset(markers[,c(4,10,11,15,16)])
+second<-subset(second[,c(1,69:71,77,85)])
+
+
+## Merging tables:
+firstsecond<-merge(first,second,by.x = "LoginID",by.y = "LoginID")
+markerstype<-dcast(markers,LoginID~category2conflict)
+firstsecondmarkerstype<-merge(firstsecond,markerstype,by.x = "LoginID",by.y = "LoginID")
+markersfirstsecond<-merge(markers,firstsecond,by.x = "LoginID",by.y = "LoginID")
