@@ -13,6 +13,7 @@ second<-read.delim("Second-conflict.txt")
 second<-subset(second,second$age>17) ##select respondents that are above 18
 first<-first[!duplicated(first$LoginID),] ## eliminates duplicates of LoginID (each respondent should have a unique questionnaire)
 
+### Select desired columns
 first<-subset(first[,c(4,9,11,15,21)])
 markers<-subset(markers[,c(4,10,11,15,16)])
 second<-subset(second[,c(1,69:71,77,85)])
